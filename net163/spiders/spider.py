@@ -5,12 +5,14 @@ from pymongo import MongoClient
 
 class QuotesSpider(scrapy.Spider):
     name = "net163"
-    documentDate = time.strftime("w%y%m%d%H%M",time.localtime())
-    client = MongoClient('主机IP', 27017)
+    documentDayHourMinute = time.strftime("MHd%M%H%d",time.localtime())
+    documentYearMonth = time.strftime("my%m%y", time.localtime())
+    client = MongoClient('主机IP', 端口)
     admin = client.admin
-    admin.authenticate('数据库授权过的用户名', '密码')
+    admin.authenticate('用户名', '密码')
     db = client.w163
-    varCollection = db.create_collection(documentDate)
+    collectionName = documentYearMonth+'.'+documentDayHourMinute
+    varCollection = db.create_collection(collectionName)
 
     def start_requests(self):
         allowed_domains = ['163.com']
@@ -75,5 +77,6 @@ class QuotesSpider(scrapy.Spider):
 
         shijian = time.strftime("%y/%m%d",time.localtime())
         links = response.xpath("//a[contains(@href,'%s')]/@href" % shijian).extract()
+        print(links)
         for href in links:
             yield response.follow(href, callback=self.parse)
