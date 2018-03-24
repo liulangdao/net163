@@ -6,9 +6,9 @@ from pymongo import MongoClient
 class QuotesSpider(scrapy.Spider):
     name = "net163"
     documentDate = time.strftime("w%y%m%d%H%M",time.localtime())
-    client = MongoClient('主机IP', 27017)
+    client = MongoClient('涓绘満IP', 绔彛)
     admin = client.admin
-    admin.authenticate('数据库授权过的用户名', '密码')
+    admin.authenticate('鏁版嵁搴撴巿鏉冭繃鐨勭敤鎴峰悕', '瀵嗙爜')
     db = client.w163
     varCollection = db.create_collection(documentDate)
 
