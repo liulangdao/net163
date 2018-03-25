@@ -5,11 +5,18 @@ from pymongo import MongoClient
 
 class QuotesSpider(scrapy.Spider):
     name = "net163"
+<<<<<<< HEAD
     documentDayHourMinute = time.strftime("MHd%M%H%d",time.localtime())
     documentYearMonth = time.strftime("my%m%y", time.localtime())
     client = MongoClient('Ö÷»úIP', ¶Ë¿Ú)
     admin = client.admin
     admin.authenticate('ÓÃ»§Ãû', 'ÃÜÂë')
+=======
+    documentDate = time.strftime("w%y%m%d%H%M",time.localtime())
+    client = MongoClient('ä¸»æœºIP', ç«¯å£)
+    admin = client.admin
+    admin.authenticate('æ•°æ®åº“æŽˆæƒè¿‡çš„ç”¨æˆ·å', 'å¯†ç ')
+>>>>>>> e2ff9d0aa447f8d140bc828f5f674fe870e312aa
     db = client.w163
     collectionName = documentYearMonth+'.'+documentDayHourMinute
     varCollection = db.create_collection(collectionName)
