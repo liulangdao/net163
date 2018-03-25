@@ -7,13 +7,9 @@ class QuotesSpider(scrapy.Spider):
     name = "net163"
     documentDayHourMinute = time.strftime("MHd%M%H%d",time.localtime())
     documentYearMonth = time.strftime("my%m%y", time.localtime())
-    client = MongoClient('ä¸»æœºIP', ç«¯å£)
+    client = MongoClient('Ö÷»úIP', ¶Ë¿Ú)
     admin = client.admin
-    admin.authenticate('ç”¨æˆ·å', 'å¯†ç ')
-    documentDate = time.strftime("w%y%m%d%H%M",time.localtime())
-    client = MongoClient('ä¸»æœºIP', ç«¯å£)
-    admin = client.admin
-    admin.authenticate('ç”¨æˆ·å', 'å¯†ç ')
+    admin.authenticate('ÓÃ»§Ãû', 'ÃÜÂë')
     db = client.w163
     collectionName = documentYearMonth+'.'+documentDayHourMinute
     varCollection = db.create_collection(collectionName)
