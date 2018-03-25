@@ -1,19 +1,24 @@
-﻿import scrapy
+import scrapy
 import time
-
 import re
 from pymongo import MongoClient
 
 class QuotesSpider(scrapy.Spider):
+    """
+        数据库授权用户：authUser，密码：password
+        远程主机：host，端口：port
+    """
     name = "net163"
-    documentDayHourMinute = time.strftime("MHd%M%H%d",time.localtime())
-    documentYearMonth = time.strftime("my%m%y", time.localtime())
-    client = MongoClient('主机IP', 端口)
-    admin = client.admin
-    admin.authenticate('用户名', '密码')
-    db = client.w163
-    collectionName = documentYearMonth+'.'+documentDayHourMinute
-    varCollection = db.create_collection(collectionName)
+
+    def __init__(self,host=None,authUser=None,password=None,port=27017,*args, **kwargs):
+        documentDayHourMinute = time.strftime("MHd%M%H%d", time.localtime())
+        documentYearMonth = time.strftime("my%m%y", time.localtime())
+        client = MongoClient(host, port)
+        admin = client.admin
+        admin.authenticate(authUser,password)
+        db = client.w163
+        collectionName = documentYearMonth + '.' + documentDayHourMinute
+        self.varCollection = db.create_collection(collectionName)
 
     def start_requests(self):
         allowed_domains = ['163.com']
@@ -70,11 +75,12 @@ class QuotesSpider(scrapy.Spider):
            yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
+        url = response.url
         title = response.xpath('//div[@id="epContentLeft"]/h1/text()').extract_first()
         content = response.xpath('//*[@id="endText"]/*/text()').extract()
         spiderTime = time.strftime("%y/%m%d-%H:%M:%S",time.localtime())
         if title is not None:
-            self.varCollection.insert({'spiderTime':spiderTime,'title':title,'content':content})
+            self.varCollection.insert({'spiderTime':spiderTime,'url':url,'title':title,'content':content})
 
         shijian = time.strftime("%y/%m%d",time.localtime())
         links = response.xpath("//a[contains(@href,'%s')]/@href" % shijian).extract()
