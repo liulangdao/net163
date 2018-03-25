@@ -3,6 +3,7 @@ import time
 import re
 from pymongo import MongoClient
 
+
 class QuotesSpider(scrapy.Spider):
     name = "net163"
     documentDayHourMinute = time.strftime("MHd%M%H%d",time.localtime())
