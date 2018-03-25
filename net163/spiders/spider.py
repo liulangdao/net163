@@ -1,8 +1,8 @@
-import scrapy
+﻿import scrapy
 import time
+
 import re
 from pymongo import MongoClient
-
 
 class QuotesSpider(scrapy.Spider):
     name = "net163"
