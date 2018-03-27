@@ -11,8 +11,8 @@ class QuotesSpider(scrapy.Spider):
     name = "net163"
 
     def __init__(self,host=None,authUser=None,password=None,port=27017,*args, **kwargs):
-        documentDayHourMinute = time.strftime("MHd%M%H%d", time.localtime())
-        documentYearMonth = time.strftime("my%m%y", time.localtime())
+        documentDayHourMinute = time.strftime("M%d%H%M", time.localtime())
+        documentYearMonth = time.strftime("D%y%m", time.localtime())
         client = MongoClient(host, port)
         admin = client.admin
         admin.authenticate(authUser,password)
@@ -78,6 +78,9 @@ class QuotesSpider(scrapy.Spider):
         url = response.url
         title = response.xpath('//div[@id="epContentLeft"]/h1/text()').extract_first()
         content = response.xpath('//*[@id="endText"]/*/text()').extract()
+        content = ''.join(content)
+        content = content.strip()
+        content = content.replace(' ','')
         spiderTime = time.strftime("%y/%m%d-%H:%M:%S",time.localtime())
         if title is not None:
             self.varCollection.insert({'spiderTime':spiderTime,'url':url,'title':title,'content':content})
