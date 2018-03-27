@@ -77,8 +77,7 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
         url = response.url
         title = response.xpath('//div[@id="epContentLeft"]/h1/text()').extract_first()
-        content = response.xpath('//*[@id="endText"]/*/text()').extract()
-        content = ''.join(content)
+        content = response.xpath('string(//*[@id="endText"])').extract_first("没有发现")
         content = content.strip()
         content = content.replace(' ','')
         spiderTime = time.strftime("%y/%m%d-%H:%M:%S",time.localtime())
