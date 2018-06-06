@@ -6,7 +6,7 @@ from pymongo import MongoClient
 class QuotesSpider(scrapy.Spider):
     """
         数据库授权用户：authUser，密码：password
-        远程主机：host，端口：port
+        远程主机：host，端口：port,aaa
     """
     name = "net163"
 
